@@ -1227,16 +1227,17 @@ footer a {
   margin-inline: auto;
 }
 
+/* Card widths follow the six-card grid (5 gaps, 5 small + 1 active at 4×) so every grid matches. */
 .design-card {
-  flex: 1 1 0;
+  flex: 0 0 calc((100% - 100px) / 9);
   min-width: 0;
   margin: 0;
   cursor: pointer;
-  transition: flex-grow .6s cubic-bezier(.2,.8,.2,1);
+  transition: flex-basis .6s cubic-bezier(.2,.8,.2,1);
 }
 
 .design-card.is-active {
-  flex-grow: 4;
+  flex-basis: calc((100% - 100px) * 4 / 9);
   cursor: default;
 }
 
@@ -2044,6 +2045,41 @@ h2 {
   .approach-statement { font-size: 13px; }
 }
 
+/* Design project sub-sections */
+.design-subhead {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 28px;
+  font-family: var(--mono);
+  font-size: var(--fs-label);
+  font-weight: 400;
+  letter-spacing: .14em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.design-subhead span {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--blue);
+  border-radius: 50%;
+  color: var(--blue);
+  letter-spacing: 0;
+}
+
+.design-subhead::after {
+  content: "";
+  flex: 1;
+  border-top: 1px dashed rgba(17, 18, 15, .25);
+}
+
+.design-grid + .design-subhead {
+  margin-top: clamp(56px, 6vw, 88px);
+}
+
 /* Frameless images */
 .profile-photo img,
 .profile-placeholder,
@@ -2138,8 +2174,9 @@ h2 {
 <section id="design-projects" class="section creative-section">
 <div class="section-head">
 <h2>Design projects</h2>
-<span class="small">Selected urban &amp; architecture design work</span>
+<span class="small">Architecture · Urban · Interaction</span>
 </div>
+<h3 class="design-subhead" id="architecture-urban"><span>A</span>Architecture &amp; urban design</h3>
 <div class="design-grid">
 <article class="design-card">
 <div class="design-visual" data-index="D—01">
@@ -2211,6 +2248,33 @@ h2 {
 <p>Public-space renovation for a 30,000-square-metre former industrial park, connecting white factory halls and smaller red-brick buildings through a coherent sequence of creative and communal spaces.</p>
 </div>
 <span class="placeholder-label">Industrial regeneration<br>Shenzhen, China</span>
+</div>
+</article>
+</div>
+<h3 class="design-subhead" id="interaction-design"><span>B</span>Interaction design</h3>
+<div class="design-grid">
+<article class="design-card is-active">
+<div class="design-visual" data-index="I—01">
+<img src="images/interaction-design/ust-map-installation.jpg" alt="Interactive UST Map installation with the projection-mapped campus model in front of a media wall">
+</div>
+<div class="design-meta">
+<div>
+<h3>Interactive UST Map</h3>
+<p>An AI-assisted, projection-mapped campus model that works as both a wayfinding tool and a guide to HKUST’s sustainability projects, paired with a campus-wide Amazing Sustainability Race.</p>
+</div>
+<span class="placeholder-label">Interactive installation<br>HKUST, Hong Kong</span>
+</div>
+</article>
+<article class="design-card">
+<div class="design-visual" data-index="I—02">
+<img src="images/interaction-design/queens-college-ar.jpg" alt="AR storytelling of Queen's College: animated 3D campus models on a phone and an AR marker in a nearby street">
+</div>
+<div class="design-meta">
+<div>
+<h3>Queen’s College Interactive Heritage</h3>
+<p>An AR storytelling experience where markers in nearby public spaces unlock animations, voiceovers, and 3D models tracing the architectural history of Queen’s College, one of Hong Kong’s oldest schools.</p>
+</div>
+<span class="placeholder-label">Augmented reality<br>Hong Kong</span>
 </div>
 </article>
 </div>
@@ -2389,7 +2453,8 @@ h2 {
 
   const designCards = document.querySelectorAll(".design-card");
   const activateDesignCard = (card) => {
-    designCards.forEach((item) => item.classList.toggle("is-active", item === card));
+    card.parentElement.querySelectorAll(".design-card")
+      .forEach((item) => item.classList.toggle("is-active", item === card));
   };
 
   designCards.forEach((card) => {
