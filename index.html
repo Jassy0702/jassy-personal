@@ -30,7 +30,7 @@ html {
 body {
   overflow-x: clip;
   background:
-    linear-gradient(90deg, transparent calc(100% - 1px), rgba(17,18,15,.035) 1px) 0 0 / 8.333vw 100%,
+    radial-gradient(circle, rgba(143, 172, 86, 0.5) 0 1px, transparent 1.4px) 0 0 / 40px 40px,
     var(--paper);
   color: var(--ink);
   font-family: "Helvetica Neue", "Neue Haas Grotesk Text Pro", Arial, sans-serif;
@@ -253,7 +253,7 @@ h1 em::after {
 }
 
 .intro {
-  max-width: 670px;
+  max-width: 620px;
   margin: 0;
   color: #494c46;
   font-size: clamp(19px, 2vw, 28px);
@@ -311,6 +311,26 @@ h1 em::after {
 }
 
 .ribbon span + span { border-left: 1px solid var(--ink); }
+
+.approach-statement {
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+  color: #494c46;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -.02em;
+  line-height: 1.6;
+}
+
+.approach-statement strong {
+  color: var(--blue);
+  font-weight: 400;
+}
+
+.approach-statement p { margin: 0 0 14px; }
+.approach-statement p:last-child { margin-bottom: 0; }
 
 .section { padding: clamp(88px, 10vw, 150px) 0; }
 
@@ -640,7 +660,8 @@ footer a {
   transform: translateY(35px);
 }
 
-.js .in-view {
+.js .in-view,
+.js .approach article.in-view {
   opacity: 1;
   transform: translateY(0);
   transition: opacity .65s ease, transform .65s cubic-bezier(.2,.8,.2,1);
@@ -681,12 +702,6 @@ footer a {
 }
 
 @media (max-width: 680px) {
-  body {
-    background:
-      linear-gradient(90deg, transparent calc(100% - 1px), rgba(17,18,15,.03) 1px) 0 0 / 25vw 100%,
-      var(--paper);
-  }
-
   .wrap { width: min(100% - 34px, 1440px); }
   .nav {
     min-height: 74px;
@@ -768,7 +783,7 @@ footer a {
 }
 
 .hero-bio {
-  font-size: clamp(16px, 1.45vw, 16px);
+  font-size: clamp(16px, 1.45vw, 14px);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
@@ -1013,7 +1028,7 @@ footer a {
 .pin-2 .thumb {
   width: 300px;
   height: 110px;
-  background: #c7d0ef;
+  background: transparent;
   transform: rotate(2deg);
 }
 .pin-2 figcaption { top: 25px; right: calc(100% + 28px); text-align: right; }
@@ -1031,8 +1046,8 @@ footer a {
 
 .pin-4 { top: 330px; right: 8%; }
 .pin-4 .thumb {
-  width: 164px;
-  height: 108px;
+  width: 190px;
+  height: 110px;
   background: #9aa9a4;
   transform: rotate(-1deg);
 }
@@ -1197,34 +1212,72 @@ footer a {
 /* Design and artwork placeholders */
 .creative-section {
   border-top: 0;
+  padding-block: clamp(62px, 7vw, 96px);
 }
 
 .design-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 18px;
+  --design-big: clamp(400px, 180vw, 320px);
+  --design-small: clamp(120px, 80vw, 140px);
+  --design-meta-space: 200px;
+  height: calc(var(--design-big) + var(--design-meta-space));
+  display: flex;
+  width: 100%;
+  gap: 20px;
+  align-items: flex-start;
+  margin-inline: auto;
 }
 
 .design-card {
-  grid-column: span 7;
+  flex: 1 1 0;
+  min-width: 0;
   margin: 0;
+  cursor: pointer;
+  transition: flex-grow .6s cubic-bezier(.2,.8,.2,1);
 }
 
-.design-card:nth-child(2) { grid-column: span 5; }
-.design-card:nth-child(3) { grid-column: 4 / span 9; margin-top: 30px; }
+.design-card.is-active {
+  flex-grow: 4;
+  cursor: default;
+}
+
+.design-card:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 5px;
+}
 
 .design-visual {
   position: relative;
-  min-height: 330px;
+  height: var(--design-small);
+  margin-top: calc((var(--design-big) - var(--design-small)) / 2);
   overflow: hidden;
   border: 1px solid var(--ink);
-  background: #bbd0d4;
-  transition: transform .3s ease, box-shadow .3s ease;
+  background: #fff;
+  transition:
+    height .6s cubic-bezier(.2,.8,.2,1),
+    margin-top .6s cubic-bezier(.2,.8,.2,1),
+    box-shadow .3s ease;
 }
 
-.design-card:hover .design-visual {
-  box-shadow: 10px 10px 0 var(--blue);
-  transform: translate(-4px, -4px);
+.design-card.is-active .design-visual {
+  height: var(--design-big);
+  margin-top: 0;
+  box-shadow: 10px 10px 0 var(--acid);
+}
+
+.design-card:not(.is-active):hover .design-visual {
+  box-shadow: 6px 6px 0 var(--acid);
+}
+
+.design-card:not(.is-active) .design-visual::after {
+  display: none;
+}
+
+.design-visual img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 .design-visual::after {
@@ -1261,30 +1314,47 @@ footer a {
 }
 
 .design-meta {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 24px;
+  display: none;
+  grid-template-columns: 1fr;
+  gap: 10px;
   align-items: start;
-  padding: 18px 0 12px;
+  padding: 18px 0 8px;
 }
 
-.design-meta h3 { margin: 0; font-size: clamp(25px, 2.5vw, 38px); }
+.design-card.is-active .design-meta {
+  display: grid;
+  animation: design-meta-in .45s ease .25s both;
+}
+
+@keyframes design-meta-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.design-meta h3 { margin: 0; font-size: clamp(22px, 2vw, 30px); }
+
+.design-meta p {
+  max-width: 58ch;
+  margin: 9px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
 
 .placeholder-label {
   color: var(--muted);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 10px;
   letter-spacing: .08em;
-  text-align: right;
+  text-align: left;
   text-transform: uppercase;
 }
 
 .artwork-section {
   position: relative;
   margin: 30px 0 110px;
-  padding: clamp(50px, 7vw, 90px);
+  padding: clamp(50px, 7vw, 90px) 0;
   overflow: hidden;
-  border-top: 1px solid var(--ink);
   background: transparent;
   color: var(--ink);
 }
@@ -1309,10 +1379,7 @@ footer a {
   gap: clamp(34px, 6vw, 85px);
 }
 
-.art-card {
-  padding-top: 20px;
-  border-top: 2px solid var(--blue);
-}
+.art-card { padding-top: 0; }
 
 .art-card > header {
   display: flex;
@@ -1506,13 +1573,11 @@ footer a {
   text-transform: uppercase;
 }
 
-.js .design-card,
 .js .art-card {
   opacity: 0;
   transform: translateY(35px);
 }
 
-.js .design-card.in-view,
 .js .art-card.in-view {
   opacity: 1;
   transform: translateY(0);
@@ -1521,27 +1586,34 @@ footer a {
 
 @media (max-width: 760px) {
   .design-grid {
-    grid-template-columns: minmax(0, 1fr);
+    flex-direction: column;
+    height: auto;
+    gap: 44px;
   }
 
   .design-card,
-  .design-card:nth-child(2),
-  .design-card:nth-child(3) {
+  .design-card.is-active {
+    flex: none;
     width: 100%;
-    min-width: 0;
-    grid-column: 1;
-    margin-top: 0;
+    cursor: default;
   }
 
   .design-visual,
-  .design-meta {
-    width: 100%;
-    min-width: 0;
+  .design-card.is-active .design-visual {
+    height: auto;
+    aspect-ratio: 7 / 5;
+    margin-top: 0;
   }
 
-  .design-visual { min-height: 250px; }
+  .design-meta,
+  .design-card.is-active .design-meta {
+    display: grid;
+    animation: none;
+  }
+
+  .design-card:not(.is-active) .design-visual::after { display: block; }
   .design-visual-three { min-height: 210px; }
-  .artwork-section { padding: 50px 24px; margin-bottom: 75px; }
+  .artwork-section { padding: 50px 0; margin-bottom: 75px; }
   .artwork-grid { grid-template-columns: 1fr; }
   .painting-wall { width: 100%; min-height: 980px; }
   .paint-swatch:first-child { width: 58%; left: 0; }
@@ -1599,7 +1671,7 @@ footer a {
   .placeholder-label { text-align: left; }
 
   .artwork-section {
-    padding: 38px 14px;
+    padding: 38px 0;
     margin-bottom: 55px;
   }
   .art-card > header {
@@ -1633,15 +1705,21 @@ footer a {
   }
 }
 
-/* Clean responsive painting gallery */
-.painting-wall {
+/* Layered painting collection */
+.painting-layout {
   display: grid;
-  width: min(68.8%, 656px);
+  grid-template-columns: minmax(0, 1.8fr) minmax(230px, .72fr);
+  gap: clamp(38px, 6vw, 88px);
+  align-items: center;
+}
+
+.painting-wall {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: clamp(560px, 48vw, 720px);
   min-height: 0;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(13px, 1.92vw, 21px);
-  align-items: start;
-  margin-inline: auto;
+  margin: 0;
 }
 
 .paint-swatch,
@@ -1649,10 +1727,12 @@ footer a {
 .paint-swatch:nth-child(2),
 .paint-swatch:nth-child(3),
 .paint-swatch:nth-child(4),
-.paint-swatch:nth-child(5) {
-  position: relative;
-  inset: auto;
-  width: 100%;
+.paint-swatch:nth-child(5),
+.paint-swatch:nth-child(6),
+.paint-swatch:nth-child(7),
+.paint-swatch:nth-child(8) {
+  position: absolute;
+  width: 24%;
   aspect-ratio: 3 / 4;
   margin: 0;
   overflow: hidden;
@@ -1660,24 +1740,90 @@ footer a {
   background: #f7f5ef;
   box-shadow: 7px 7px 0 rgba(17, 18, 15, .08);
   cursor: zoom-in;
-  transform: none;
-}
-
-.paint-swatch:hover {
-  z-index: 3;
-  box-shadow: 12px 12px 0 var(--acid);
+  transition: transform .25s ease, box-shadow .25s ease;
 }
 
 .paint-swatch:focus-visible {
-  z-index: 3;
+  z-index: 20;
   outline: 3px solid var(--blue);
   outline-offset: 5px;
 }
 
+/* % Anaji, Japan */
 .paint-swatch:first-child {
-  grid-column: span 2;
+  top: 18%;
+  left: 25%;
+  z-index: 1;
+  width: 42%;
   aspect-ratio: 16 / 9;
-  align-self: center;
+  transform: rotate(-1.8deg);
+}
+
+/* % Mushroom */
+.paint-swatch:nth-child(2) {
+  top: 2%;
+  left: 50%;
+  z-index: 2;
+  width: 25%;
+  transform: rotate(1.6deg);
+}
+
+/* % Train */
+.paint-swatch:nth-child(3) {
+  top: 47%;
+  left: 35%;
+  z-index: 4;
+  transform: rotate(-1.4deg);
+}
+
+/* % Building */
+.paint-swatch:nth-child(4) {
+  top: 12%;
+  right: 4%;
+  z-index: 5;
+  width: 27%;
+  transform: rotate(1.2deg);
+}
+
+/* % Urban */
+.paint-swatch:nth-child(5) {
+  top: 45%;
+  left: 0;
+  z-index: 6;
+  width: 23%;
+  transform: rotate(1.4deg);
+}
+
+/* % Car */
+.paint-swatch:nth-child(6) {
+  top: 52%;
+  left: 55%;
+  z-index: 4;
+  transform: rotate(-1.6deg);
+}
+
+/* % Terrace */
+.paint-swatch:nth-child(7) {
+  top: 44%;
+  right: 5%;
+  z-index: 5;
+  width: 21%;
+  transform: rotate(1.8deg);
+}
+
+/* % Plaza */
+.paint-swatch:nth-child(8) {
+  bottom: 0;
+  left: 25%;
+  z-index: 8;
+  width: 23%;
+  transform: rotate(-1deg);
+}
+
+.paint-swatch:hover {
+  z-index: 20;
+  box-shadow: 12px 12px 0 var(--acid);
+  transform: rotate(0deg) scale(1.045);
 }
 
 .paint-swatch img {
@@ -1685,6 +1831,34 @@ footer a {
   height: 100%;
   object-fit: cover;
   object-position: center;
+}
+
+.painting-note {
+  padding-left: clamp(24px, 4vw, 52px);
+  border-left: 1px solid var(--ink);
+}
+
+.painting-note .small {
+  display: block;
+  margin-bottom: 18px;
+  color: var(--blue);
+}
+
+.painting-note h4 {
+  margin: 0 0 22px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(34px, 4vw, 58px);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -.05em;
+  line-height: .95;
+}
+
+.painting-note p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.65;
 }
 
 .artwork-lightbox {
@@ -1731,15 +1905,42 @@ footer a {
 }
 
 @media (max-width: 760px) {
+  .painting-layout {
+    grid-template-columns: 1fr;
+    gap: 42px;
+  }
+
   .painting-wall {
-    width: 73.6%;
-    min-height: 0;
+    display: grid;
+    width: 100%;
+    height: auto;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 11px;
+    gap: 14px;
+  }
+
+  .paint-swatch,
+  .paint-swatch:first-child,
+  .paint-swatch:nth-child(2),
+  .paint-swatch:nth-child(3),
+  .paint-swatch:nth-child(4),
+  .paint-swatch:nth-child(5),
+  .paint-swatch:nth-child(6),
+  .paint-swatch:nth-child(7),
+  .paint-swatch:nth-child(8) {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    transform: none;
   }
 
   .paint-swatch:first-child {
     grid-column: 1 / -1;
+  }
+
+  .painting-note {
+    padding: 28px 0 0;
+    border-top: 1px solid var(--ink);
+    border-left: 0;
   }
 
   .artwork-lightbox {
@@ -1748,6 +1949,119 @@ footer a {
     padding: 34px 16px 16px;
   }
 }
+
+/* Unified type scale and section rhythm */
+:root {
+  --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --section-space: clamp(64px, 7vw, 112px);
+  --fs-h2: clamp(28px, 2.6vw, 36px);
+  --fs-h3: clamp(22px, 1.8vw, 26px);
+  --fs-body: 15px;
+  --fs-mono: 15px;
+  --fs-label: 11px;
+  --fs-micro: 10px;
+  --lh-body: 1.6;
+}
+
+.section,
+.artwork-section {
+  margin: 0;
+  padding: var(--section-space) 0 0;
+}
+
+.artwork-section { padding-bottom: var(--section-space); }
+
+.section-head {
+  margin-bottom: clamp(32px, 3.5vw, 48px);
+  padding-bottom: 20px;
+}
+
+h2 {
+  font-size: var(--fs-h2);
+  letter-spacing: -.05em;
+  line-height: 1;
+}
+
+.design-meta h3,
+.painting-note h3 {
+  margin: 0;
+  font-size: var(--fs-h3);
+  font-weight: 500;
+  letter-spacing: -.04em;
+  line-height: 1.1;
+}
+
+.design-meta p,
+.painting-note p {
+  color: var(--muted);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+}
+
+.hero-bio,
+.profile-photo figcaption,
+.approach-statement {
+  font-family: var(--mono);
+  font-size: var(--fs-mono);
+  letter-spacing: -.02em;
+  line-height: 1.55;
+}
+
+.small,
+.placeholder-label,
+.board-kicker {
+  font-family: var(--mono);
+  font-size: var(--fs-label);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.pub-venue {
+  font-size: var(--fs-label) !important;
+  letter-spacing: .06em;
+}
+
+.pub-authors { font-size: 14px !important; }
+
+.pub-type,
+.pub-status { font-size: var(--fs-micro); }
+
+.design-meta {
+  gap: 12px;
+  padding: 20px 0 0;
+}
+
+.design-meta p { margin: 8px 0 0; }
+
+.painting-layout { gap: clamp(32px, 4vw, 56px); }
+
+.painting-note .small { margin-bottom: 12px; }
+.painting-note h3 { margin-bottom: 16px; }
+
+@media (max-width: 560px) {
+  .hero-bio,
+  .profile-photo figcaption,
+  .approach-statement { font-size: 13px; }
+}
+
+/* Frameless images */
+.profile-photo img,
+.profile-placeholder,
+.pin .thumb,
+.design-visual,
+.painting-wall .paint-swatch {
+  --img-shadow: 7px 7px 0 rgba(17, 18, 15, .2);
+  border: 0;
+  background: transparent;
+  box-shadow: var(--img-shadow);
+}
+
+.pin .thumb,
+.profile-photo img { border: 1px solid var(--ink); }
+.pin:hover .thumb { box-shadow: 11px 11px 0 var(--acid); }
+.design-card.is-active .design-visual { box-shadow: 10px 10px 0 var(--acid); }
+.design-card:not(.is-active):hover .design-visual { box-shadow: 6px 6px 0 var(--acid); }
+.painting-wall .paint-swatch:hover { box-shadow: 12px 12px 0 var(--acid); }
 </style>
 </head>
 <body>
@@ -1784,7 +2098,7 @@ footer a {
 </p>
 </div>
 <div class="research-board" aria-label="A visual map of Jassy's research projects and themes">
-<span class="board-kicker">Research Themes / 01—06</span>
+<span class="board-kicker">Research On-going / 01—06</span>
 <!-- Replace each .thumb div with an <img> when project images are ready. -->
 <figure class="pin pin-1">
   <div class="thumb">
@@ -1794,19 +2108,19 @@ footer a {
 </figure>
 <figure class="pin pin-2">
 <div class="thumb"><img src="images/user journey_User flow.png" alt="WanderWith mobile interface overview"><span>02</span></div>
-<figcaption><strong>WanderWith</strong><span>Exploratory Walking Application</span></figcaption>
+<figcaption><strong>WanderWith</strong><span>Mobile-Supported Walking Application</span></figcaption>
 </figure>
 <figure class="pin pin-3">
 <div class="thumb"><img src="images/surreality.PNG" alt="Surreality mixed reality exhibition"><span>03</span></div>
 <figcaption><strong>Surreality</strong><span>Mixed reality · Exhibition</span></figcaption>
 </figure>
 <figure class="pin pin-4">
-<div class="thumb" role="img" aria-label="Placeholder for Meaningful city walking project image"><span>04</span></div>
-<figcaption><strong>Meaningful city walking</strong><span>Attention · Discovery</span></figcaption>
+<div class="thumb"><img src="images/city%20image_teaser.png" alt="Colour imagery study for urban regeneration"><span>04</span></div>
+<figcaption><strong>Urban Regeneration</strong><span>Colour strategy · Place identity</span></figcaption>
 </figure>
 <figure class="pin pin-5">
 <div class="thumb"><img src="images/05.png" alt="Interactive system concept showing users, sensors, an actuator, and a microcontroller"><span>05</span></div>
-<figcaption><strong>Making ideas visible</strong><span>Generative AI</span></figcaption>
+<figcaption><strong>HCI in public spaces</strong><span>Interaction design · Human behavior</span></figcaption>
 </figure>
 <figure class="pin pin-6">
 <div class="thumb"><img src="images/colour.png" alt="Urban colour research diagram"><span>06</span></div>
@@ -1814,44 +2128,89 @@ footer a {
 </figure>
 </div>
 <aside class="hero-aside">
-<div class="eyebrow">At the intersection</div>
+<div class="eyebrow">Research interests </div>
 <p>Human–computer interaction<br>Urban experience<br>Public spaces<br>Colour design</p>
-<a class="link" href="#work">Explore my research</a>
 </aside>
 </section>
 </main>
-</div>
-<div class="ribbon" aria-label="Research themes">
-<span>EVERYDAY URBAN LIFE</span>
-<span>INCLUSIVE PUBLIC SPACE</span>
-<span>PARTICIPATION & IMAGINATION</span>
 </div>
 <div class="wrap">
 <section id="design-projects" class="section creative-section">
 <div class="section-head">
 <h2>Design projects</h2>
-<span class="small">Selected urban &amp; interaction work</span>
+<span class="small">Selected urban &amp; architecture design work</span>
 </div>
 <div class="design-grid">
 <article class="design-card">
-<div class="design-visual design-visual-one" data-index="D—01" role="img" aria-label="Placeholder for design project one"></div>
+<div class="design-visual" data-index="D—01">
+<img src="images/design%20project/01-missing-links.png" alt="Climate-resilient wetland proposal for the former Dalum Paper Factory">
+</div>
 <div class="design-meta">
-<h3>Design project 01</h3>
-<span class="placeholder-label">Project image<br>and title</span>
+<div>
+<h3>Missing Links</h3>
+<p>Climate-resilient regeneration of the former Dalum Paper Factory, reconnecting the industrial site with Odense Å through wetlands, green infrastructure, and mixed urban living.</p>
+</div>
+<span class="placeholder-label">Climate adaptation<br>Odense, Denmark</span>
 </div>
 </article>
 <article class="design-card">
-<div class="design-visual design-visual-two" data-index="D—02" role="img" aria-label="Placeholder for design project two"></div>
+<div class="design-visual" data-index="D—02">
+<img src="images/design%20project/02-colour-city-image.png" alt="Colour-led walking street proposal for Shenzhen">
+</div>
 <div class="design-meta">
-<h3>Design project 02</h3>
-<span class="placeholder-label">Process<br>and outcome</span>
+<div>
+<h3>Colour Design for City Image</h3>
+<p>A colour-led urban regeneration strategy for Shenzhen that translates local visual identity into coordinated streetscapes, public spaces, and everyday wayfinding.</p>
+</div>
+<span class="placeholder-label">Colour strategy<br>Shenzhen, China</span>
+</div>
+</article>
+<article class="design-card is-active">
+<div class="design-visual" data-index="D—03">
+<img src="images/design%20project/03-tie-dye-museum.png" alt="Interior, plan, and sections of the Tie Dye Museum">
+</div>
+<div class="design-meta">
+<div>
+<h3>Tie Dye Museum</h3>
+<p>A museum in Dali shaped around the spatial rhythms of traditional tie-dye craft, combining exhibition, making, and gathering spaces in a contemporary cultural setting.</p>
+</div>
+<span class="placeholder-label">Cultural architecture<br>Dali, China</span>
 </div>
 </article>
 <article class="design-card">
-<div class="design-visual design-visual-three" data-index="D—03" role="img" aria-label="Placeholder for design project three"></div>
+<div class="design-visual" data-index="D—04">
+<img src="images/design%20project/04-saga-square.png" alt="Night view and gateway studies for Saga Square in Aarhus">
+</div>
 <div class="design-meta">
-<h3>Design project 03</h3>
-<span class="placeholder-label">Add your work<br>here later</span>
+<div>
+<h3>Saga Square</h3>
+<p>A civic square proposal for Aarhus Station that uses a luminous circular landmark and framed gateways to turn arrival into a memorable shared urban experience.</p>
+</div>
+<span class="placeholder-label">Public space<br>Aarhus, Denmark</span>
+</div>
+</article>
+<article class="design-card">
+<div class="design-visual" data-index="D—05">
+<img src="images/design%20project/05-shenzhen-uabb-exhibition-hall.png" alt="Light-filled exhibition route inside the reused UABB industrial hall">
+</div>
+<div class="design-meta">
+<div>
+<h3>Shenzhen UABB Exhibition Hall</h3>
+<p>Adaptive reuse of a 10,000-square-metre abandoned factory for the 2019 UABB Longgang exhibition, preserving its industrial structure while a folded, light-filled route guides visitors through the hall.</p>
+</div>
+<span class="placeholder-label">Exhibition architecture<br>Shenzhen, China</span>
+</div>
+</article>
+<article class="design-card">
+<div class="design-visual" data-index="D—06">
+<img src="images/design%20project/06-shenzhen-pingshan-sculptural-park.png" alt="Renovated buildings and public-space system at Shenzhen Pingshan Sculptural Park">
+</div>
+<div class="design-meta">
+<div>
+<h3>Shenzhen Pingshan Sculptural Park</h3>
+<p>Public-space renovation for a 30,000-square-metre former industrial park, connecting white factory halls and smaller red-brick buildings through a coherent sequence of creative and communal spaces.</p>
+</div>
+<span class="placeholder-label">Industrial regeneration<br>Shenzhen, China</span>
 </div>
 </article>
 </div>
@@ -1941,21 +2300,11 @@ footer a {
 <section id="approach" class="section">
 <div class="section-head">
 <h2>How I approach the work</h2>
-<span class="small">People and place at the center</span>
+<span class="small">Perspectives · Methods</span>
 </div>
-<div class="approach">
-<article>
-<h3>Listen to lived experience</h3>
-<p>Begin with people’s routines, memories, and situated concerns to understand what matters in everyday urban life.</p>
-</article>
-<article>
-<h3>Make ideas discussable</h3>
-<p>Use interactive prototypes and visual representations to help people articulate experiences and explore alternatives.</p>
-</article>
-<article>
-<h3>Learn in context</h3>
-<p>Examine how systems are experienced in relation to physical settings, social situations, and the people who use them.</p>
-</article>
+<div class="approach-statement">
+<p>I treat the feelings and stories I encounter in <strong>everyday life as starting points for research</strong>. Take <strong>walking in the city</strong>, the focus of my work: seen through the eyes of a designer, an urban observer, or a philosopher, the same walk becomes an entirely different act. I want to uncover how these perspectives reshape the way we understand everyday life.</p>
+<p>Through the lens of HCI, I look at <strong>how technology enters and reshapes daily routines</strong>. In my design projects I draw on diverse methods, including sketching, collage, formative user interviews, and prototyping. I believe <strong>the boundaries of design are the boundaries of thinking</strong>, and that research is the bridge between lived reality and design ideation. This is why most of my research is <strong>project&#8209;based</strong>.</p>
 </div>
 </section>
 <section id="artwork" class="artwork-section">
@@ -1965,10 +2314,7 @@ footer a {
 </div>
 <div class="artwork-grid">
 <article class="art-card">
-<header>
-<h3>Painting</h3>
-<span>Visual studies / Archive</span>
-</header>
+<div class="painting-layout">
 <div class="painting-wall" aria-label="Painting gallery">
 <figure class="paint-swatch">
 <img src="images/Artworks/Anaji.%20Japen..jpg" alt="Watercolour painting of Anaji, Japan">
@@ -1995,6 +2341,12 @@ footer a {
 <img src="images/Artworks/plaza-web.jpg" alt="Digital painting of people flying kites in an urban plaza">
 </figure>
 </div>
+<aside class="painting-note">
+<span class="small">Personal practice</span>
+<h3>Painting as a visual diary</h3>
+<p>Alongside my research, painting gives me a slower way to observe the world. I collect changing light, everyday streets, architecture, and quiet moments through watercolour and digital painting. Each work preserves something I noticed in a place—its atmosphere, colour, rhythm, or feeling.</p>
+</aside>
+</div>
 </article>
 </div>
 </section>
@@ -2011,7 +2363,7 @@ footer a {
 <script>
   document.documentElement.classList.add("js");
 
-  const revealItems = document.querySelectorAll(".project, .approach article, .design-card, .art-card");
+  const revealItems = document.querySelectorAll(".project, .approach article, .art-card");
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -2033,6 +2385,18 @@ footer a {
         if (other !== detail) other.open = false;
       });
     });
+  });
+
+  const designCards = document.querySelectorAll(".design-card");
+  const activateDesignCard = (card) => {
+    designCards.forEach((item) => item.classList.toggle("is-active", item === card));
+  };
+
+  designCards.forEach((card) => {
+    card.tabIndex = 0;
+    card.addEventListener("mouseenter", () => activateDesignCard(card));
+    card.addEventListener("focus", () => activateDesignCard(card));
+    card.addEventListener("click", () => activateDesignCard(card));
   });
 
   const artworkLightbox = document.querySelector(".artwork-lightbox");
